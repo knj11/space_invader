@@ -7,8 +7,9 @@
 // ---------------------------------------------------------------------------------------------------------
 void processInput(GLFWwindow *window)
 {
-    if(glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
         glfwSetWindowShouldClose(window, true);
+    }
 }
 
 // glfw: whenever the window size changed (by OS or user resize) this callback function executes
@@ -24,17 +25,30 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
 
+void error_callback(int error, const char* description)
+{
+    fprintf(stderr, "Error: %s\n", description);
+}
+
 int main()
 {
-        std::cout << "Hello world" << std::endl;
-        printf("helloWorld its your boy");
+        // std::cout << "Hello world" << std::endl;
+        // printf("helloWorld its your boy");
+        // printf("Kobyshsd");
+        // fprintf(stdout, "What up");
+        const size_t buffer_width = 2000;
+        const size_t buffer_height = 1600;
+        
+        glfwSetErrorCallback(error_callback);
 
-        glfwInit();
+        if (!glfwInit()) return -1;
+        
+        glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
         glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
         glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-        glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+        glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 
-        GLFWwindow* window = glfwCreateWindow(800, 600, "LearnOpenGL", NULL, NULL);
+        GLFWwindow* window = glfwCreateWindow(buffer_width, buffer_height, "Space Invaders", NULL, NULL);
         if (window == NULL)
         {
                 std::cout << "Failed to create GLFW window" << std::endl;
