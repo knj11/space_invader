@@ -404,6 +404,21 @@ int main()
 
                 buffer_draw_sprite(&buffer, player_sprite, game.player.x, game.player.y, rgb_to_uint32(128, 0, 0));
 
+                /* Update animations */
+                ++alien_animation->time;
+                if(alien_animation->time == alien_animation->num_frames * alien_animation->frame_duration)
+                {
+                        if(alien_animation->loop) 
+                        {
+                                alien_animation->time = 0;
+                        }
+                        else
+                        {
+                                delete alien_animation;
+                                alien_animation = nullptr;
+                        }
+                }
+
                 glTexSubImage2D(
                     GL_TEXTURE_2D, 0, 0, 0,
                     buffer.width, buffer.height,
