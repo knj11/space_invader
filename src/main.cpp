@@ -360,6 +360,15 @@ int main()
 
         game.player.life = 3;
 
+        for(size_t yi = 0; yi < 5; ++yi)
+        {
+                for(size_t xi = 0; xi < 11; ++xi)
+                {
+                        game.aliens[yi * 11 + xi].x = 16 * xi + 20;
+                        game.aliens[yi * 11 + xi].y = 17 * yi + 128;
+                }
+        }
+
         uint32_t clear_color = rgb_to_uint32(0, 128, 0);
         // render loop
         // -----------
