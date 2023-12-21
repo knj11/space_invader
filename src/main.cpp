@@ -295,6 +295,12 @@ int main()
 
                 buffer_draw_sprite(&buffer, alien_sprite, 112, 128, rgb_to_uint32(128, 0, 0));
 
+                glTexSubImage2D(
+                    GL_TEXTURE_2D, 0, 0, 0,
+                    buffer.width, buffer.height,
+                    GL_RGBA, GL_UNSIGNED_INT_8_8_8_8,
+                    buffer.data
+                );
                 // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
                 // -------------------------------------------------------------------------------
                 glfwSwapBuffers(window);
