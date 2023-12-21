@@ -26,6 +26,22 @@ inline void gl_debug(const char *file, int line) {
 
 #undef GL_ERROR_CASE
 
+
+struct Buffer
+{
+    size_t width, height;
+    uint32_t* data;
+};
+
+
+void buffer_clear(Buffer* buffer, uint32_t color)
+{
+    for(size_t i = 0; i < buffer->width * buffer->height; ++i)
+    {
+        buffer->data[i] = color;
+    }
+}
+
 // process all input: query GLFW whether relevant keys are pressed/released this frame and react accordingly
 // ---------------------------------------------------------------------------------------------------------
 void processInput(GLFWwindow *window)
@@ -94,6 +110,14 @@ int main()
 
         // args: red, green, blue, alpha
         glClearColor(1.0, 0.0, 0.0, 1.0);
+
+        // Create graphics buffer
+        Buffer buffer;
+        buffer.width  = buffer_width;
+        buffer.height = buffer_height;
+        buffer.data   = new uint32_t[buffer.width * buffer.height];
+
+        buffer_clear(&buffer, 0);
 
         // render loop
         // -----------
