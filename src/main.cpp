@@ -92,6 +92,9 @@ int main()
         printf("Renderer used: %s\n", glGetString(GL_RENDERER));
         printf("Shading Language: %s\n", glGetString(GL_SHADING_LANGUAGE_VERSION));
 
+        // args: red, green, blue, alpha
+        glClearColor(1.0, 0.0, 0.0, 1.0);
+
         // render loop
         // -----------
         while (!glfwWindowShouldClose(window))
