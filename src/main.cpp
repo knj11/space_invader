@@ -191,6 +191,44 @@ int main()
                 "    gl_Position = vec4(2.0 * TexCoord - 1.0, 0.0, 1.0);\n"
                 "}\n";
 
+        GLuint shader_id = glCreateProgram();
+
+        {
+            //Create vertex shader
+            GLuint shader_vp = glCreateShader(GL_VERTEX_SHADER);
+
+            glShaderSource(shader_vp, 1, &vertex_shader, 0);
+            glCompileShader(shader_vp);
+            validate_shader(shader_vp, vertex_shader);
+            glAttachShader(shader_id, shader_vp);
+
+            glDeleteShader(shader_vp);
+        }
+
+        {
+            //Create fragment shader
+            GLuint shader_fp = glCreateShader(GL_FRAGMENT_SHADER);
+
+            glShaderSource(shader_fp, 1, &fragment_shader, 0);
+            glCompileShader(shader_fp);
+            validate_shader(shader_fp, fragment_shader);
+            glAttachShader(shader_id, shader_fp);
+
+            glDeleteShader(shader_fp);
+        }
+
+        glLinkProgram(shader_id);
+
+        if(!validate_program(shader_id)){
+            fprintf(stderr, "Error while validating shader.\n");
+            glfwTerminate();
+            glDeleteVertexArrays(1, &fullscreen_triangle_vao);
+            delete[] buffer.data;
+            return -1;
+        }
+
+        glUseProgram(shader_id);
+
         // render loop
         // -----------
         while (!glfwWindowShouldClose(window))
