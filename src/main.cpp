@@ -393,7 +393,16 @@ int main()
         {
                 buffer_clear(&buffer, clear_color);
 
-                buffer_draw_sprite(&buffer, alien_sprite0, 112, 128, rgb_to_uint32(128, 0, 0));
+                /* Draw */
+                for(size_t ai = 0; ai < game.num_aliens; ++ai)
+                {
+                        const Alien& alien = game.aliens[ai];
+                        size_t current_frame = alien_animation->time / alien_animation->frame_duration;
+                        const Sprite& sprite = *alien_animation->frames[current_frame];
+                        buffer_draw_sprite(&buffer, sprite, alien.x, alien.y, rgb_to_uint32(128, 0, 0));
+                }
+
+                buffer_draw_sprite(&buffer, player_sprite, game.player.x, game.player.y, rgb_to_uint32(128, 0, 0));
 
                 glTexSubImage2D(
                     GL_TEXTURE_2D, 0, 0, 0,
