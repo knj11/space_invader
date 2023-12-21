@@ -311,6 +311,13 @@ int main()
 
         // glfw: terminate, clearing all previously allocated GLFW resources.
         // ------------------------------------------------------------------
+        glfwDestroyWindow(window);
         glfwTerminate();
+    
+        glDeleteVertexArrays(1, &fullscreen_triangle_vao);
+
+        delete[] alien_sprite.data;
+        delete[] buffer.data;
+
         return 0;
 }
