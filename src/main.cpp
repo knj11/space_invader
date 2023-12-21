@@ -358,7 +358,7 @@ int main()
 
         alien_animation->loop = true;
         alien_animation->num_frames = 2;
-        alien_animation->frame_duration = 10;
+        alien_animation->frame_duration = 50; // old val: 10
         alien_animation->time = 0;
 
         alien_animation->frames = new Sprite*[2];
