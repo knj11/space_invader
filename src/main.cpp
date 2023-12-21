@@ -287,12 +287,12 @@ int main()
         {
                 // input
                 // -----
-                processInput(window);
+                // processInput(window);
 
                 // render
                 // ------
-                glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-                glClear(GL_COLOR_BUFFER_BIT);
+                buffer_clear(&buffer, clear_color);
+
 
                 // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
                 // -------------------------------------------------------------------------------
