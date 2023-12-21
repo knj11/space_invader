@@ -348,6 +348,18 @@ int main()
         alien_animation->frames = new Sprite*[2];
         alien_animation->frames[0] = &alien_sprite0;
         alien_animation->frames[1] = &alien_sprite1;
+
+        Game game;
+        game.width = buffer_width;
+        game.height = buffer_height;
+        game.num_aliens = 55;
+        game.aliens = new Alien[game.num_aliens];
+
+        game.player.x = 112 - 5;
+        game.player.y = 32;
+
+        game.player.life = 3;
+
         uint32_t clear_color = rgb_to_uint32(0, 128, 0);
         // render loop
         // -----------
