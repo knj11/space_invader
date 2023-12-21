@@ -229,6 +229,16 @@ int main()
 
         glUseProgram(shader_id);
 
+        /* attach texture to uniform sampler2D var in the fragment shader */
+        GLint location = glGetUniformLocation(shader_id, "buffer");
+        glUniform1i(location, 0);
+
+        //OpenGL setup
+        glDisable(GL_DEPTH_TEST);
+        glActiveTexture(GL_TEXTURE0);
+
+        glBindVertexArray(fullscreen_triangle_vao);
+
         // render loop
         // -----------
         while (!glfwWindowShouldClose(window))
