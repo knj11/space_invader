@@ -301,6 +301,8 @@ int main()
                     GL_RGBA, GL_UNSIGNED_INT_8_8_8_8,
                     buffer.data
                 );
+                glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+
                 // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
                 // -------------------------------------------------------------------------------
                 glfwSwapBuffers(window);
