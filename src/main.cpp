@@ -21,10 +21,6 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
     glViewport(0, 0, width, height);
 }
 
-// settings
-const unsigned int SCR_WIDTH = 800;
-const unsigned int SCR_HEIGHT = 600;
-
 void error_callback(int error, const char* description)
 {
     fprintf(stderr, "Error: %s\n", description);
@@ -32,12 +28,8 @@ void error_callback(int error, const char* description)
 
 int main()
 {
-        // std::cout << "Hello world" << std::endl;
-        // printf("helloWorld its your boy");
-        // printf("Kobyshsd");
-        // fprintf(stdout, "What up");
-        const size_t buffer_width = 2000;
-        const size_t buffer_height = 1600;
+        const size_t buffer_width = 224;
+        const size_t buffer_height = 256;
         
         glfwSetErrorCallback(error_callback);
 
@@ -56,6 +48,7 @@ int main()
                 return -1;
         }
         glfwMakeContextCurrent(window);
+
         glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
         // glad: load all OpenGL function pointers
