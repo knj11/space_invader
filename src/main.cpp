@@ -293,6 +293,7 @@ int main()
                 // ------
                 buffer_clear(&buffer, clear_color);
 
+                buffer_draw_sprite(&buffer, alien_sprite, 112, 128, rgb_to_uint32(128, 0, 0));
 
                 // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
                 // -------------------------------------------------------------------------------
