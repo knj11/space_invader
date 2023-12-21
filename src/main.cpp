@@ -73,6 +73,11 @@ void buffer_clear(Buffer* buffer, uint32_t color)
     }
 }
 
+
+uint32_t rgb_to_uint32(uint8_t r, uint8_t g, uint8_t b)
+{
+    return (r << 24) | (g << 16) | (b << 8) | 255;
+}
 // process all input: query GLFW whether relevant keys are pressed/released this frame and react accordingly
 // ---------------------------------------------------------------------------------------------------------
 void processInput(GLFWwindow *window)
@@ -259,6 +264,8 @@ int main()
             1,0,1,0,0,0,0,0,1,0,1, // @.@.....@.@
             0,0,0,1,1,0,1,1,0,0,0  // ...@@.@@...
         };
+
+        uint32_t clear_color = rgb_to_uint32(0, 128, 0);
         // render loop
         // -----------
         while (!glfwWindowShouldClose(window))
