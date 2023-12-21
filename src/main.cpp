@@ -294,10 +294,10 @@ int main()
         glBindVertexArray(fullscreen_triangle_vao);
 
         // Prepare game
-        Sprite alien_sprite;
-        alien_sprite.width = 11;
-        alien_sprite.height = 8;
-        alien_sprite.data = new uint8_t[88]
+        Sprite alien_sprite0;
+        alien_sprite0.width = 11;
+        alien_sprite0.height = 8;
+        alien_sprite0.data = new uint8_t[88]
         {
             0,0,1,0,0,0,0,0,1,0,0, // ..@.....@..
             0,0,0,1,0,0,0,1,0,0,0, // ...@...@...
@@ -314,15 +314,9 @@ int main()
         // -----------
         while (!glfwWindowShouldClose(window))
         {
-                // input
-                // -----
-                // processInput(window);
-
-                // render
-                // ------
                 buffer_clear(&buffer, clear_color);
 
-                buffer_draw_sprite(&buffer, alien_sprite, 112, 128, rgb_to_uint32(128, 0, 0));
+                buffer_draw_sprite(&buffer, alien_sprite0, 112, 128, rgb_to_uint32(128, 0, 0));
 
                 glTexSubImage2D(
                     GL_TEXTURE_2D, 0, 0, 0,
@@ -345,7 +339,7 @@ int main()
     
         glDeleteVertexArrays(1, &fullscreen_triangle_vao);
 
-        delete[] alien_sprite.data;
+        delete[] alien_sprite0.data;
         delete[] buffer.data;
 
         return 0;
