@@ -59,6 +59,11 @@ struct Buffer
     uint32_t* data;
 };
 
+struct Sprite
+{
+    size_t width, height;
+    uint8_t* data;
+};
 
 void buffer_clear(Buffer* buffer, uint32_t color)
 {
@@ -239,6 +244,21 @@ int main()
 
         glBindVertexArray(fullscreen_triangle_vao);
 
+        // Prepare game
+        Sprite alien_sprite;
+        alien_sprite.width = 11;
+        alien_sprite.height = 8;
+        alien_sprite.data = new uint8_t[88]
+        {
+            0,0,1,0,0,0,0,0,1,0,0, // ..@.....@..
+            0,0,0,1,0,0,0,1,0,0,0, // ...@...@...
+            0,0,1,1,1,1,1,1,1,0,0, // ..@@@@@@@..
+            0,1,1,0,1,1,1,0,1,1,0, // .@@.@@@.@@.
+            1,1,1,1,1,1,1,1,1,1,1, // @@@@@@@@@@@
+            1,0,1,1,1,1,1,1,1,0,1, // @.@@@@@@@.@
+            1,0,1,0,0,0,0,0,1,0,1, // @.@.....@.@
+            0,0,0,1,1,0,1,1,0,0,0  // ...@@.@@...
+        };
         // render loop
         // -----------
         while (!glfwWindowShouldClose(window))
