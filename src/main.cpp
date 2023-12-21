@@ -4,6 +4,7 @@
 #include <iostream>
 
 bool game_running = false;
+int move_dir = 0;
 #define GL_ERROR_CASE(glerror)\
     case glerror: snprintf(error, sizeof(error), "%s", #glerror)
 
@@ -63,6 +64,14 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
     switch(key){
     case GLFW_KEY_ESCAPE:
         if(action == GLFW_PRESS) game_running = false;
+        break;
+    case GLFW_KEY_RIGHT:
+        if(action == GLFW_PRESS) move_dir += 1;
+        else if(action == GLFW_RELEASE) move_dir -= 1;
+        break;
+    case GLFW_KEY_LEFT:
+        if(action == GLFW_PRESS) move_dir -= 1;
+        else if(action == GLFW_RELEASE) move_dir += 1;
         break;
     default:
         break;
@@ -387,6 +396,7 @@ int main()
 
         uint32_t clear_color = rgb_to_uint32(0, 128, 0);
         game_running = true;
+        int player_move_dir = 0;
 
         /* Render Loop */
         while (!glfwWindowShouldClose(window) && game_running)
@@ -430,6 +440,23 @@ int main()
                 // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
                 // -------------------------------------------------------------------------------
                 glfwSwapBuffers(window);
+
+                // Simulate player
+                player_move_dir = 2 * move_dir;
+
+                if(player_move_dir != 0)
+                {
+                        if(game.player.x + player_sprite.width + player_move_dir >= game.width)
+                        {
+                                game.player.x = game.width - player_sprite.width;
+                        }
+                        else if((int)game.player.x + player_move_dir <= 0)
+                        {
+                                game.player.x = 0;
+                        }
+                        else game.player.x += player_move_dir;
+                }
+
                 glfwPollEvents();
         }
 
