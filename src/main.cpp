@@ -338,6 +338,16 @@ int main()
                 1,1,1,1,1,1,1,1,1,1,1, // @@@@@@@@@@@
         };
 
+        SpriteAnimation* alien_animation = new SpriteAnimation;
+
+        alien_animation->loop = true;
+        alien_animation->num_frames = 2;
+        alien_animation->frame_duration = 10;
+        alien_animation->time = 0;
+
+        alien_animation->frames = new Sprite*[2];
+        alien_animation->frames[0] = &alien_sprite0;
+        alien_animation->frames[1] = &alien_sprite1;
         uint32_t clear_color = rgb_to_uint32(0, 128, 0);
         // render loop
         // -----------
