@@ -119,6 +119,20 @@ int main()
 
         buffer_clear(&buffer, 0);
 
+        // Create texture for presenting buffer to OpenGL
+        GLuint buffer_texture;
+        /** buffer_texture will store the names/ints of the generated
+         *  textures in opengl
+         */
+        glGenTextures(1, &buffer_texture);
+        /* The generated number is then associated with a 2d texture */
+        glBindTexture(GL_TEXTURE_2D, buffer_texture);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8, buffer.width, buffer.height, 0, GL_RGBA, GL_UNSIGNED_INT_8_8_8_8, buffer.data);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
         // render loop
         // -----------
         while (!glfwWindowShouldClose(window))
