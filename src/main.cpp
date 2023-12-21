@@ -81,9 +81,16 @@ int main()
                 std::cout << "Failed to initialize GLAD" << std::endl;
                 glfwTerminate();
                 return -1;
-        }    
+        }
+        int glVersion[2] = {-1,1};
+        glGetIntegerv(GL_MAJOR_VERSION, &glVersion[0]);
+        glGetIntegerv(GL_MINOR_VERSION, &glVersion[1]);
 
         gl_debug(__FILE__, __LINE__);
+
+        printf("Using OpenGL: %d.%d\n", glVersion[0], glVersion[1]);
+        printf("Renderer used: %s\n", glGetString(GL_RENDERER));
+        printf("Shading Language: %s\n", glGetString(GL_SHADING_LANGUAGE_VERSION));
 
         // render loop
         // -----------
