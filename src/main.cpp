@@ -5,6 +5,8 @@
 
 bool game_running = false;
 int move_dir = 0;
+bool fire_pressed = 0;
+
 #define GL_ERROR_CASE(glerror)\
     case glerror: snprintf(error, sizeof(error), "%s", #glerror)
 
@@ -72,6 +74,9 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
     case GLFW_KEY_LEFT:
         if(action == GLFW_PRESS) move_dir -= 1;
         else if(action == GLFW_RELEASE) move_dir += 1;
+        break;
+    case GLFW_KEY_SPACE:
+        if(action == GLFW_RELEASE) fire_pressed = true;
         break;
     default:
         break;
@@ -483,6 +488,16 @@ int main()
                         }
                         else game.player.x += player_move_dir;
                 }
+
+                // Process events
+                if(fire_pressed && game.num_bullets < GAME_MAX_BULLETS)
+                {
+                        game.bullets[game.num_bullets].x = game.player.x + player_sprite.width / 2;
+                        game.bullets[game.num_bullets].y = game.player.y + player_sprite.height;
+                        game.bullets[game.num_bullets].dir = 2;
+                        ++game.num_bullets;
+                }
+                fire_pressed = false;
 
                 glfwPollEvents();
         }
