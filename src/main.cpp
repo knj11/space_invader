@@ -473,6 +473,21 @@ int main()
                 // -------------------------------------------------------------------------------
                 glfwSwapBuffers(window);
 
+                /* Simulate the bullets */
+                for(size_t bi = 0; bi < game.num_bullets;)
+                {
+                        game.bullets[bi].y += game.bullets[bi].dir;
+                        if(game.bullets[bi].y >= game.height ||
+                           game.bullets[bi].y < bullet_sprite.height)
+                        {
+                                game.bullets[bi] = game.bullets[game.num_bullets - 1];
+                                --game.num_bullets;
+                                continue;
+                        }
+
+                        ++bi;
+                }
+
                 // Simulate player
                 player_move_dir = 2 * move_dir;
 
