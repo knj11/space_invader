@@ -96,18 +96,27 @@ struct Alien
     uint8_t type;
 };
 
+struct Bullet
+{
+    size_t x, y;
+    int dir;
+};
+
 struct Player
 {
     size_t x, y;
     size_t life;
 };
 
+#define GAME_MAX_BULLETS 128
 struct Game
 {
     size_t width, height;
     size_t num_aliens;
+    size_t num_bullets;
     Alien* aliens;
     Player player;
+    Bullet bullets[GAME_MAX_BULLETS];
 };
 
 struct SpriteAnimation
@@ -387,6 +396,7 @@ int main()
         Game game;
         game.width = buffer_width;
         game.height = buffer_height;
+        game.num_bullets = 0;
         game.num_aliens = 55;
         game.aliens = new Alien[game.num_aliens];
 
