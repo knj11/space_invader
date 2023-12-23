@@ -432,6 +432,13 @@ int main()
                         buffer_draw_sprite(&buffer, sprite, alien.x, alien.y, rgb_to_uint32(128, 0, 0));
                 }
 
+                for(size_t bi = 0; bi < game.num_bullets; ++bi)
+                {
+                        const Bullet& bullet = game.bullets[bi];
+                        const Sprite& sprite = bullet_sprite;
+                        buffer_draw_sprite(&buffer, sprite, bullet.x, bullet.y, rgb_to_uint32(128, 0, 0));
+                }
+
                 buffer_draw_sprite(&buffer, player_sprite, game.player.x, game.player.y, rgb_to_uint32(128, 0, 0));
 
                 /* Update animations */
