@@ -363,6 +363,16 @@ int main()
                 1,1,1,1,1,1,1,1,1,1,1, // @@@@@@@@@@@
         };
 
+        Sprite bullet_sprite;
+        bullet_sprite.width = 1;
+        bullet_sprite.height = 3;
+        bullet_sprite.data = new uint8_t[3]
+        {
+                1, // @
+                1, // @
+                1  // @
+        };
+
         SpriteAnimation* alien_animation = new SpriteAnimation;
 
         alien_animation->loop = true;
