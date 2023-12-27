@@ -528,9 +528,17 @@ int main()
                         if(!death_counters[ai]) continue;
 
                         const Alien& alien = game.aliens[ai];
-                        size_t current_frame = alien_animation->time / alien_animation->frame_duration;
-                        const Sprite& sprite = *alien_animation->frames[current_frame];
-                        buffer_draw_sprite(&buffer, sprite, alien.x, alien.y, rgb_to_uint32(128, 0, 0));
+                        if(alien.type == ALIEN_DEAD)
+                        {
+                                buffer_draw_sprite(&buffer, alien_death_sprite, alien.x, alien.y, rgb_to_uint32(128, 0, 0));
+                        }
+                        else
+                        {
+                                const SpriteAnimation& animation = alien_animation[alien.type - 1];
+                                size_t current_frame = animation.time / animation.frame_duration;
+                                const Sprite& sprite = *animation.frames[current_frame];
+                                buffer_draw_sprite(&buffer, sprite, alien.x, alien.y, rgb_to_uint32(128, 0, 0));
+                        }
                 }
 
                 for(size_t bi = 0; bi < game.num_bullets; ++bi)
