@@ -572,6 +572,16 @@ int main()
                 // -------------------------------------------------------------------------------
                 glfwSwapBuffers(window);
 
+                // Simulate aliens
+                for(size_t ai = 0; ai < game.num_aliens; ++ai)
+                {
+                        const Alien& alien = game.aliens[ai];
+                        if(alien.type == ALIEN_DEAD && death_counters[ai])
+                        {
+                                --death_counters[ai];
+                        }
+                }
+
                 /* Simulate the bullets */
                 for(size_t bi = 0; bi < game.num_bullets;)
                 {
