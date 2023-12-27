@@ -149,6 +149,24 @@ void buffer_clear(Buffer* buffer, uint32_t color)
     }
 }
 
+bool sprite_overlap_check(
+    const Sprite& sp_a, size_t x_a, size_t y_a,
+    const Sprite& sp_b, size_t x_b, size_t y_b
+)
+{
+    // NOTE: For simplicity we just check for overlap of the sprite
+    // rectangles. Instead, if the rectangles overlap, we should
+    // further check if any pixel of sprite A overlap with any of
+    // sprite B.
+    if(x_a < x_b + sp_b.width && x_a + sp_a.width > x_b &&
+       y_a < y_b + sp_b.height && y_a + sp_a.height > y_b)
+    {
+        return true;
+    }
+
+    return false;
+}
+
 void buffer_draw_sprite(Buffer* buffer, const Sprite& sprite, size_t x, size_t y, uint32_t color)
 {
     for(size_t xi = 0; xi < sprite.width; ++xi)
@@ -592,6 +610,31 @@ int main()
                                 game.bullets[bi] = game.bullets[game.num_bullets - 1];
                                 --game.num_bullets;
                                 continue;
+                        }
+
+                        // Check hit
+                        for(size_t ai = 0; ai < game.num_aliens; ++ai)
+                        {
+                                const Alien& alien = game.aliens[ai];
+                                if(alien.type == ALIEN_DEAD) continue;
+
+                                const SpriteAnimation& animation = alien_animation[alien.type - 1];
+                                size_t current_frame = animation.time / animation.frame_duration;
+                                const Sprite& alien_sprite = *animation.frames[current_frame];
+                                bool overlap = sprite_overlap_check(
+                                        bullet_sprite, game.bullets[bi].x, game.bullets[bi].y,
+                                        alien_sprite, alien.x, alien.y
+                                );
+
+                                if(overlap)
+                                {
+                                        game.aliens[ai].type = ALIEN_DEAD;
+                                        // NOTE: Hack to recenter death sprite
+                                        game.aliens[ai].x -= (alien_death_sprite.width - alien_sprite.width)/2;
+                                        game.bullets[bi] = game.bullets[game.num_bullets - 1];
+                                        --game.num_bullets;
+                                        continue;
+                                }
                         }
 
                         ++bi;
