@@ -604,13 +604,20 @@ int main()
     
         glDeleteVertexArrays(1, &fullscreen_triangle_vao);
 
-        delete[] alien_sprite0.data;
-        delete[] alien_sprite1.data;
-        delete[] alien_animation->frames;
+        for(size_t i = 0; i < 6; ++i)
+        {
+                delete[] alien_sprites[i].data;
+        }
+
+        delete[] alien_death_sprite.data;
+
+        for(size_t i = 0; i < 3; ++i)
+        {
+                delete[] alien_animation[i].frames;
+        }
         delete[] buffer.data;
         delete[] game.aliens;
-
-        delete alien_animation;
+        delete[] death_counters;
 
         return 0;
 }
