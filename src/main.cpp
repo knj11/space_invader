@@ -525,6 +525,8 @@ int main()
                 /* Draw */
                 for(size_t ai = 0; ai < game.num_aliens; ++ai)
                 {
+                        if(!death_counters[ai]) continue;
+
                         const Alien& alien = game.aliens[ai];
                         size_t current_frame = alien_animation->time / alien_animation->frame_duration;
                         const Sprite& sprite = *alien_animation->frames[current_frame];
