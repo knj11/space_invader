@@ -8,201 +8,206 @@ int move_dir = 0;
 bool fire_pressed = 0;
 
 #define GL_ERROR_CASE(glerror)\
-    case glerror: snprintf(error, sizeof(error), "%s", #glerror)
+        case glerror: snprintf(error, sizeof(error), "%s", #glerror)
 
 inline void gl_debug(const char *file, int line) {
-    GLenum err;
-    while((err = glGetError()) != GL_NO_ERROR){
-        char error[128];
+        GLenum err;
+        while((err = glGetError()) != GL_NO_ERROR){
+                char error[128];
 
-        switch(err) {
-            GL_ERROR_CASE(GL_INVALID_ENUM); break;
-            GL_ERROR_CASE(GL_INVALID_VALUE); break;
-            GL_ERROR_CASE(GL_INVALID_OPERATION); break;
-            GL_ERROR_CASE(GL_INVALID_FRAMEBUFFER_OPERATION); break;
-            GL_ERROR_CASE(GL_OUT_OF_MEMORY); break;
-            default: snprintf(error, sizeof(error), "%s", "UNKNOWN_ERROR"); break;
+                switch(err) {
+                GL_ERROR_CASE(GL_INVALID_ENUM); break;
+                GL_ERROR_CASE(GL_INVALID_VALUE); break;
+                GL_ERROR_CASE(GL_INVALID_OPERATION); break;
+                GL_ERROR_CASE(GL_INVALID_FRAMEBUFFER_OPERATION); break;
+                GL_ERROR_CASE(GL_OUT_OF_MEMORY); break;
+                default: snprintf(error, sizeof(error), "%s", "UNKNOWN_ERROR"); break;
+                }
+
+                fprintf(stderr, "%s - %s: %d\n", error, file, line);
         }
-
-        fprintf(stderr, "%s - %s: %d\n", error, file, line);
-    }
 }
 
 #undef GL_ERROR_CASE
 
 void validate_shader(GLuint shader, const char *file = 0){
-    static const unsigned int BUFFER_SIZE = 512;
-    char buffer[BUFFER_SIZE];
-    GLsizei length = 0;
+        static const unsigned int BUFFER_SIZE = 512;
+        char buffer[BUFFER_SIZE];
+        GLsizei length = 0;
 
-    glGetShaderInfoLog(shader, BUFFER_SIZE, &length, buffer);
+        glGetShaderInfoLog(shader, BUFFER_SIZE, &length, buffer);
 
-    if(length>0){
-        printf("Shader %d(%s) compile error: %s\n", shader, (file? file: ""), buffer);
-    }
+        if(length>0){
+                printf("Shader %d(%s) compile error: %s\n", shader, (file? file: ""), buffer);
+        }
 }
 
 bool validate_program(GLuint program){
-    static const GLsizei BUFFER_SIZE = 512;
-    GLchar buffer[BUFFER_SIZE];
-    GLsizei length = 0;
+        static const GLsizei BUFFER_SIZE = 512;
+        GLchar buffer[BUFFER_SIZE];
+        GLsizei length = 0;
 
-    glGetProgramInfoLog(program, BUFFER_SIZE, &length, buffer);
+        glGetProgramInfoLog(program, BUFFER_SIZE, &length, buffer);
 
-    if(length>0){
-        printf("Program %d link error: %s\n", program, buffer);
-        return false;
-    }
+        if(length>0){
+                printf("Program %d link error: %s\n", program, buffer);
+                return false;
+        }
 
-    return true;
+        return true;
 }
 
 void error_callback(int error, const char* description)
 {
-    fprintf(stderr, "Error: %s\n", description);
+        fprintf(stderr, "Error: %s\n", description);
 }
 
-void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods){
-    switch(key){
-    case GLFW_KEY_ESCAPE:
-        if(action == GLFW_PRESS) game_running = false;
-        break;
-    case GLFW_KEY_RIGHT:
-        if(action == GLFW_PRESS) move_dir += 1;
-        else if(action == GLFW_RELEASE) move_dir -= 1;
-        break;
-    case GLFW_KEY_LEFT:
-        if(action == GLFW_PRESS) move_dir -= 1;
-        else if(action == GLFW_RELEASE) move_dir += 1;
-        break;
-    case GLFW_KEY_SPACE:
-        if(action == GLFW_RELEASE) fire_pressed = true;
-        break;
-    default:
-        break;
-    }
+void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
+{
+        switch(key){
+        case GLFW_KEY_ESCAPE:
+                if(action == GLFW_PRESS) game_running = false;
+                break;
+        case GLFW_KEY_RIGHT:
+                if(action == GLFW_PRESS) move_dir += 1;
+                else if(action == GLFW_RELEASE) move_dir -= 1;
+                break;
+        case GLFW_KEY_LEFT:
+                if(action == GLFW_PRESS) move_dir -= 1;
+                else if(action == GLFW_RELEASE) move_dir += 1;
+                break;
+        case GLFW_KEY_SPACE:
+                if(action == GLFW_RELEASE) fire_pressed = true;
+                break;
+        default:
+                break;
+        }
 }
 
 struct Buffer
 {
-    size_t width, height;
-    uint32_t* data;
+        size_t width, height;
+        uint32_t* data;
 };
 
 struct Sprite
 {
-    size_t width, height;
-    uint8_t* data;
+        size_t width, height;
+        uint8_t* data;
 };
 
 struct Alien
 {
-    size_t x, y;
-    uint8_t type;
+        size_t x, y;
+        uint8_t type;
 };
 
 struct Bullet
 {
-    size_t x, y;
-    int dir;
+        size_t x, y;
+        int dir;
 };
 
 struct Player
 {
-    size_t x, y;
-    size_t life;
+        size_t x, y;
+        size_t life;
 };
 
 #define GAME_MAX_BULLETS 128
 struct Game
 {
-    size_t width, height;
-    size_t num_aliens;
-    size_t num_bullets;
-    Alien* aliens;
-    Player player;
-    Bullet bullets[GAME_MAX_BULLETS];
+        size_t width, height;
+        size_t num_aliens;
+        size_t num_bullets;
+        Alien* aliens;
+        Player player;
+        Bullet bullets[GAME_MAX_BULLETS];
 };
 
 struct SpriteAnimation
 {
-    bool loop;
-    size_t num_frames;
-    size_t frame_duration;
-    size_t time;
-    Sprite** frames;
+        bool loop;
+        size_t num_frames;
+        size_t frame_duration;
+        size_t time;
+        Sprite** frames;
 };
 
 enum AlienType: uint8_t
 {
-    ALIEN_DEAD   = 0,
-    ALIEN_TYPE_A = 1,
-    ALIEN_TYPE_B = 2,
-    ALIEN_TYPE_C = 3
+        ALIEN_DEAD   = 0,
+        ALIEN_TYPE_A = 1,
+        ALIEN_TYPE_B = 2,
+        ALIEN_TYPE_C = 3
 };
 
 void buffer_clear(Buffer* buffer, uint32_t color)
 {
-    for(size_t i = 0; i < buffer->width * buffer->height; ++i)
-    {
-        buffer->data[i] = color;
-    }
+        for(size_t i = 0; i < buffer->width * buffer->height; ++i)
+        {
+                buffer->data[i] = color;
+        }
 }
 
 bool sprite_overlap_check(
-    const Sprite& sp_a, size_t x_a, size_t y_a,
-    const Sprite& sp_b, size_t x_b, size_t y_b
+        const Sprite& sp_a, size_t x_a, size_t y_a,
+        const Sprite& sp_b, size_t x_b, size_t y_b
 )
 {
-    // NOTE: For simplicity we just check for overlap of the sprite
-    // rectangles. Instead, if the rectangles overlap, we should
-    // further check if any pixel of sprite A overlap with any of
-    // sprite B.
-    if(x_a < x_b + sp_b.width && x_a + sp_a.width > x_b &&
-       y_a < y_b + sp_b.height && y_a + sp_a.height > y_b)
-    {
-        return true;
-    }
+        // NOTE: For simplicity we just check for overlap of the sprite
+        // rectangles. Instead, if the rectangles overlap, we should
+        // further check if any pixel of sprite A overlap with any of
+        // sprite B.
+        if(x_a < x_b + sp_b.width && x_a + sp_a.width > x_b &&
+           y_a < y_b + sp_b.height && y_a + sp_a.height > y_b)
+        {
+                return true;
+        }
 
-    return false;
+        return false;
 }
 
 void buffer_draw_sprite(Buffer* buffer, const Sprite& sprite, size_t x, size_t y, uint32_t color)
 {
-    for(size_t xi = 0; xi < sprite.width; ++xi)
-    {
-        for(size_t yi = 0; yi < sprite.height; ++yi)
+        for(size_t xi = 0; xi < sprite.width; ++xi)
         {
-            if(sprite.data[yi * sprite.width + xi] &&
-               (sprite.height - 1 + y - yi) < buffer->height &&
-               (x + xi) < buffer->width)
-            {
-                buffer->data[(sprite.height - 1 + y - yi) * buffer->width + (x + xi)] = color;
-            }
+                for(size_t yi = 0; yi < sprite.height; ++yi)
+                {
+                        if(sprite.data[yi * sprite.width + xi] &&
+                           (sprite.height - 1 + y - yi) < buffer->height &&
+                           (x + xi) < buffer->width)
+                        {
+                                buffer->data[(sprite.height - 1 + y - yi)
+                                             * buffer->width
+                                             + (x + xi)] = color;
+                        }
+                }
         }
-    }
+}
+        }
 }
 
 uint32_t rgb_to_uint32(uint8_t r, uint8_t g, uint8_t b)
 {
-    return (r << 24) | (g << 16) | (b << 8) | 255;
+        return (r << 24) | (g << 16) | (b << 8) | 255;
 }
 // process all input: query GLFW whether relevant keys are pressed/released this frame and react accordingly
 // ---------------------------------------------------------------------------------------------------------
 void processInput(GLFWwindow *window)
 {
-    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
-        glfwSetWindowShouldClose(window, true);
-    }
+        if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
+                glfwSetWindowShouldClose(window, true);
+        }
 }
 
 // glfw: whenever the window size changed (by OS or user resize) this callback function executes
 // ---------------------------------------------------------------------------------------------
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
-    // make sure the viewport matches the new window dimensions; note that width and 
-    // height will be significantly larger than specified on retina displays.
-    glViewport(0, 0, width, height);
+        // make sure the viewport matches the new window dimensions; note that width and 
+        // height will be significantly larger than specified on retina displays.
+        glViewport(0, 0, width, height);
 }
 
 int main()
@@ -313,37 +318,37 @@ int main()
         GLuint shader_id = glCreateProgram();
 
         {
-            //Create vertex shader
-            GLuint shader_vp = glCreateShader(GL_VERTEX_SHADER);
+                //Create vertex shader
+                GLuint shader_vp = glCreateShader(GL_VERTEX_SHADER);
 
-            glShaderSource(shader_vp, 1, &vertex_shader, 0);
-            glCompileShader(shader_vp);
-            validate_shader(shader_vp, vertex_shader);
-            glAttachShader(shader_id, shader_vp);
+                glShaderSource(shader_vp, 1, &vertex_shader, 0);
+                glCompileShader(shader_vp);
+                validate_shader(shader_vp, vertex_shader);
+                glAttachShader(shader_id, shader_vp);
 
-            glDeleteShader(shader_vp);
+                glDeleteShader(shader_vp);
         }
 
         {
-            //Create fragment shader
-            GLuint shader_fp = glCreateShader(GL_FRAGMENT_SHADER);
+                //Create fragment shader
+                GLuint shader_fp = glCreateShader(GL_FRAGMENT_SHADER);
 
-            glShaderSource(shader_fp, 1, &fragment_shader, 0);
-            glCompileShader(shader_fp);
-            validate_shader(shader_fp, fragment_shader);
-            glAttachShader(shader_id, shader_fp);
+                glShaderSource(shader_fp, 1, &fragment_shader, 0);
+                glCompileShader(shader_fp);
+                validate_shader(shader_fp, fragment_shader);
+                glAttachShader(shader_id, shader_fp);
 
-            glDeleteShader(shader_fp);
+                glDeleteShader(shader_fp);
         }
 
         glLinkProgram(shader_id);
 
         if(!validate_program(shader_id)){
-            fprintf(stderr, "Error while validating shader.\n");
-            glfwTerminate();
-            glDeleteVertexArrays(1, &fullscreen_triangle_vao);
-            delete[] buffer.data;
-            return -1;
+                fprintf(stderr, "Error while validating shader.\n");
+                glfwTerminate();
+                glDeleteVertexArrays(1, &fullscreen_triangle_vao);
+                delete[] buffer.data;
+                return -1;
         }
 
         glUseProgram(shader_id);
