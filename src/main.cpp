@@ -265,19 +265,6 @@ int main()
         glGenVertexArrays(1, &fullscreen_triangle_vao);
 
         // Create shader for displaying buffer
-        static const char* fragment_shader =
-                "\n"
-                "#version 330\n"
-                "\n"
-                "uniform sampler2D buffer;\n"
-                "noperspective in vec2 TexCoord;\n"
-                "\n"
-                "out vec3 outColor;\n"
-                "\n"
-                "void main(void){\n"
-                "    outColor = texture(buffer, TexCoord).rgb;\n"
-                "}\n";
-
         static const char* vertex_shader =
                 "\n"
                 "#version 330\n"
@@ -290,6 +277,19 @@ int main()
                 "    TexCoord.y = (gl_VertexID == 1)? 2.0: 0.0;\n"
                 "    \n"
                 "    gl_Position = vec4(2.0 * TexCoord - 1.0, 0.0, 1.0);\n"
+                "}\n";
+
+        static const char* fragment_shader =
+                "\n"
+                "#version 330\n"
+                "\n"
+                "uniform sampler2D buffer;\n"
+                "noperspective in vec2 TexCoord;\n"
+                "\n"
+                "out vec3 outColor;\n"
+                "\n"
+                "void main(void){\n"
+                "    outColor = texture(buffer, TexCoord).rgb;\n"
                 "}\n";
 
         GLuint shader_id = glCreateProgram();
