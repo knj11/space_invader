@@ -185,6 +185,48 @@ void buffer_draw_sprite(Buffer* buffer, const Sprite& sprite, size_t x, size_t y
                 }
         }
 }
+
+void buffer_draw_number(Buffer* buffer, const Sprite& number_spritesheet,
+                        size_t number, size_t x, size_t y, uint32_t color)
+{
+        uint8_t digits[64];
+        size_t num_digits = 0;
+
+        size_t current_number = number;
+        do
+        {
+                digits[num_digits++] = current_number % 10;
+                current_number = current_number / 10;
+        }
+        while(current_number > 0);
+
+        size_t xp = x;
+        size_t stride = number_spritesheet.width * number_spritesheet.height;
+        Sprite sprite = number_spritesheet;
+        for(size_t i = 0; i < num_digits; ++i)
+        {
+                uint8_t digit = digits[num_digits - i - 1];
+                sprite.data = number_spritesheet.data + digit * stride;
+                buffer_draw_sprite(buffer, sprite, xp, y, color);
+                xp += sprite.width + 1;
+        }
+}
+
+void buffer_draw_text(Buffer* buffer, const Sprite& text_spritesheet,
+                      const char* text, size_t x, size_t y,
+                      uint32_t color)
+{
+        size_t xp = x;
+        size_t stride = text_spritesheet.width * text_spritesheet.height;
+        Sprite sprite = text_spritesheet;
+        for(const char* charp = text; *charp != '\0'; ++charp)
+        {
+                char character = *charp - 32;
+                if(character < 0 || character >= 65) continue;
+
+                sprite.data = text_spritesheet.data + character * stride;
+                buffer_draw_sprite(buffer, sprite, xp, y, color);
+                xp += sprite.width + 1;
         }
 }
 
@@ -626,6 +668,8 @@ int main()
                 buffer_clear(&buffer, clear_color);
 
                 /* Draw */
+                buffer_draw_text(&buffer, text_spritesheet, "SCORE", 4, game.height - text_spritesheet.height - 7, rgb_to_uint32(128, 0, 0));
+                buffer_draw_number(&buffer, number_spritesheet, score, 4 + 2 * number_spritesheet.width, game.height - 2 * number_spritesheet.height - 12, rgb_to_uint32(128, 0, 0));
                 for(size_t ai = 0; ai < game.num_aliens; ++ai)
                 {
                         if(!death_counters[ai]) continue;
