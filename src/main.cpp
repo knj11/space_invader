@@ -551,17 +551,12 @@ int main()
                 buffer_draw_sprite(&buffer, player_sprite, game.player.x, game.player.y, rgb_to_uint32(128, 0, 0));
 
                 /* Update animations */
-                ++alien_animation->time;
-                if(alien_animation->time == alien_animation->num_frames * alien_animation->frame_duration)
+                for(size_t i = 0; i < 3; ++i)
                 {
-                        if(alien_animation->loop) 
+                        ++alien_animation[i].time;
+                        if(alien_animation[i].time == alien_animation[i].num_frames * alien_animation[i].frame_duration)
                         {
-                                alien_animation->time = 0;
-                        }
-                        else
-                        {
-                                delete alien_animation;
-                                alien_animation = nullptr;
+                                alien_animation[i].time = 0;
                         }
                 }
 
