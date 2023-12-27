@@ -537,6 +537,7 @@ int main()
         }
 
         uint32_t clear_color = rgb_to_uint32(0, 128, 0);
+        size_t score = 0;
         game_running = true;
         int player_move_dir = 0;
 
@@ -633,6 +634,7 @@ int main()
 
                                 if(overlap)
                                 {
+                                        score += 10 * (4 - game.aliens[ai].type);
                                         game.aliens[ai].type = ALIEN_DEAD;
                                         // NOTE: Hack to recenter death sprite
                                         game.aliens[ai].x -= (alien_death_sprite.width - alien_sprite.width)/2;
