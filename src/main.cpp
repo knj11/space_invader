@@ -659,6 +659,7 @@ int main()
 
         uint32_t clear_color = rgb_to_uint32(0, 128, 0);
         size_t score = 0;
+        size_t credits = 0;
         game_running = true;
         int player_move_dir = 0;
 
@@ -669,6 +670,11 @@ int main()
 
                 /* Draw */
                 buffer_draw_text(&buffer, text_spritesheet, "SCORE", 4, game.height - text_spritesheet.height - 7, rgb_to_uint32(128, 0, 0));
+
+                char credit_text[16];
+                sprintf(credit_text, "CREDIT %02zu", credits);
+                buffer_draw_text(&buffer, text_spritesheet, credit_text, 164, 7, rgb_to_uint32(128, 0, 0));
+
                 buffer_draw_number(&buffer, number_spritesheet, score, 4 + 2 * number_spritesheet.width, game.height - 2 * number_spritesheet.height - 12, rgb_to_uint32(128, 0, 0));
                 for(size_t ai = 0; ai < game.num_aliens; ++ai)
                 {
