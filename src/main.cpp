@@ -497,8 +497,13 @@ int main()
         {
                 for(size_t xi = 0; xi < 11; ++xi)
                 {
-                        game.aliens[yi * 11 + xi].x = 16 * xi + 20;
-                        game.aliens[yi * 11 + xi].y = 17 * yi + 128;
+                        Alien& alien = game.aliens[yi * 11 + xi];
+                        alien.type = (5 - yi) / 2 + 1;
+
+                        const Sprite& sprite = alien_sprites[2 * (alien.type - 1)];
+
+                        alien.x = 16 * xi + 20 + (alien_death_sprite.width - sprite.width)/2;
+                        alien.y = 17 * yi + 128;
                 }
         }
 
