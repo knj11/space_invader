@@ -507,6 +507,12 @@ int main()
                 }
         }
 
+        uint8_t* death_counters = new uint8_t[game.num_aliens];
+        for(size_t i = 0; i < game.num_aliens; ++i)
+        {
+                death_counters[i] = 10;
+        }
+
         uint32_t clear_color = rgb_to_uint32(0, 128, 0);
         game_running = true;
         int player_move_dir = 0;
